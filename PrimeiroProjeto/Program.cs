@@ -156,14 +156,6 @@ void MediaBanda()
         ExibirOpcoesDoMenu();
 
     }
-    else if (notasDaBanda.Average() <= 0)
-    {
-        Console.WriteLine($"A banda {nomeDaBanda} ainda não possui avaliação");
-        Console.WriteLine("Pressione qualquer tecla para voltar...");
-        Console.ReadKey();
-        Console.Clear();
-        MediaBanda();
-    }
     else
     {
         Console.WriteLine($"A banda {nomeDaBanda} não encontrada.");
