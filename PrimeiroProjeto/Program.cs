@@ -6,7 +6,7 @@ string mensagemDeBoasVindas = "Boas vindas ao Screen Sound";
 //List<string> listaDasBandas = new List<string> {"U2", "The Beatles", "Calypso"};
 
 Dictionary<string, List<int>> bandasRegistradas = new Dictionary<string, List<int>>();
-bandasRegistradas.Add("Linkin Park", new List<int> { 10, 8, 6 });
+bandasRegistradas.Add("Linkin Park", new List<int> { 10, 6, 8 });
 bandasRegistradas.Add("The Beatles", new List<int>());
 
 void ExibirLogo()
@@ -30,6 +30,7 @@ void ExibirOpcoesDoMenu()
     Console.WriteLine("Digite 2 para mostrar todas as bandas");
     Console.WriteLine("Digite 3 para avaliar uma banda");
     Console.WriteLine("Digite 4 para exibir a média de uma banda");
+    Console.WriteLine("Digite 5 para excluir uma banda");
     Console.WriteLine("Digite 0 para sair");
 
     Console.Write("\nDigite a sua opção: ");
@@ -49,6 +50,9 @@ void ExibirOpcoesDoMenu()
         case 4:
         MediaBanda();
         break;
+        case 5:
+        ExcluirBanda();
+        break;
         case 0:
         Console.WriteLine($"Obrigado por usar o Screen Sound!");
         break;
@@ -66,7 +70,8 @@ void RegistrarBanda()
     string nomeDaBanda = Console.ReadLine()!;
     bandasRegistradas.Add(nomeDaBanda, new List<int>());
     Console.WriteLine($"A banda {nomeDaBanda} foi registrada com sucesso");
-    Thread.Sleep(2000);
+    Console.WriteLine("\nPressione qualquer tecla...");
+    Console.ReadKey();
     Console.Clear();
     ExibirOpcoesDoMenu();
 }
@@ -84,7 +89,7 @@ void MostrarBandasRegistradas()
         Console.WriteLine($"Banda: {banda}");
     }
 
-    Console.WriteLine("\nPressione qualquer tecla para voltar ao menu principal");
+    Console.WriteLine("\nPressione qualquer tecla...");
     Console.ReadKey();
     Console.Clear();
     ExibirOpcoesDoMenu();
@@ -104,6 +109,7 @@ void AvaliarBanda()
     // Digite qual banda deseja avaliar
     // Se a banda existir no dicionário >> atribuir nota
     // Se não existir, volta ao menu principal
+
     Console.Clear();
     ExibirTituloDaOpcao("Avaliar Banda");
     Console.Write("Digite o nome da banda: ");
@@ -115,7 +121,8 @@ void AvaliarBanda()
         int nota = int.Parse(Console.ReadLine()!);
         bandasRegistradas[nomeDaBanda].Add(nota);
         Console.WriteLine($"\nA nota {nota} foi registrada com sucesso para a banda {nomeDaBanda}");
-        Thread.Sleep(2000);
+        Console.WriteLine($"Digite qualquer tecla para voltar...");
+        Console.ReadKey();
         Console.Clear();
         ExibirOpcoesDoMenu();
     }
@@ -125,7 +132,7 @@ void AvaliarBanda()
         Console.WriteLine("Pressione qualquer tecla para voltar...");
         Console.ReadKey();
         Console.Clear();
-        ExibirOpcoesDoMenu();
+        AvaliarBanda();
     }
 
 }
@@ -134,20 +141,28 @@ void MediaBanda()
     //Perguntar qual o nome da banda a qual se quer ver a média
     //Verificar se a banda ta no dicionario
     //Se tiver realizar o calculo
+    //Criar função - ok
     Console.Clear();
     ExibirTituloDaOpcao("Media das bandas");
-    //Criar função - ok
     Console.Write("Digite o nome da banda: ");
     string nomeDaBanda = Console.ReadLine()!;
+    List<int> notasDaBanda = bandasRegistradas[nomeDaBanda];
     if (bandasRegistradas.ContainsKey(nomeDaBanda))
     {
-        List<int> notasDaBanda = bandasRegistradas[nomeDaBanda];
         Console.WriteLine($"\nA média da banda {nomeDaBanda} é {notasDaBanda.Average()}.");
         Console.WriteLine("Pressione qualquer tecla para voltar...");
         Console.ReadKey();
         Console.Clear();
         ExibirOpcoesDoMenu();
 
+    }
+    else if (notasDaBanda.Average() <= 0)
+    {
+        Console.WriteLine($"A banda {nomeDaBanda} ainda não possui avaliação");
+        Console.WriteLine("Pressione qualquer tecla para voltar...");
+        Console.ReadKey();
+        Console.Clear();
+        MediaBanda();
     }
     else
     {
@@ -157,6 +172,37 @@ void MediaBanda()
         Console.Clear();
         MediaBanda();
     }
+}
+
+void ExcluirBanda()
+{
+    //Perguntar qual o nome da banda a ser exlcuída
+    //Verificar se a banda existe
+    //Se existir, excluir a banda
+
+    Console.Clear();
+    ExibirTituloDaOpcao("Excluir banda(s)");
+    Console.Write("Digite o nome da banda: ");
+    string nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        bandasRegistradas.Remove(nomeDaBanda);
+        Console.WriteLine($"A banda {nomeDaBanda} foi removida com sucesso!");
+        Console.WriteLine("Pressione qualquer tecla...");
+        Console.ReadKey();
+        Console.Clear();
+        ExibirOpcoesDoMenu();
+
+    }
+    else
+    {
+        Console.WriteLine($"A banda {nomeDaBanda} não foi encontrada.");
+        Console.WriteLine($"Pressione qualquer tecla para tentar novamente...");
+        Console.ReadKey();
+        Console.Clear();
+        ExcluirBanda();
+    }
+
 }
 
 
